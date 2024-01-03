@@ -102,7 +102,6 @@ class _SideHomePageState extends State<SideHomePage> {
                     ],
                   ),
                 ),
-                // Contenido
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(16.0),
