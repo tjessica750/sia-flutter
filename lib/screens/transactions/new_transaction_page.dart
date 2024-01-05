@@ -6,16 +6,13 @@ class TransactionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Crear Transaccion"),
-        primary: true,
-      ),
-      body: const Column(
+    return const Scaffold(
+      body: SingleChildScrollView(
+          child: Column(
         children: [
           Padding(padding: EdgeInsets.all(16.0), child: TransactionForm())
         ],
-      ),
+      )),
     );
   }
 }
@@ -28,16 +25,24 @@ class TransactionForm extends StatefulWidget {
   _TransactionForm createState() => _TransactionForm();
 }
 
-enum ColorLabel {
-  blue('Blue', Colors.blue),
-  pink('Pink', Colors.pink),
-  green('Green', Colors.green),
-  yellow('Orange', Colors.orange),
-  grey('Grey', Colors.grey);
+enum CarsLabel {
+  blue('Automovil'),
+  pink('Zapatico'),
+  green('Motocicleta'),
+  yellow('Camion');
 
-  const ColorLabel(this.label, this.color);
+  const CarsLabel(this.label);
   final String label;
-  final Color color;
+}
+
+enum FuelLabel {
+  blue('Gasolina Corriente'),
+  pink('Extra'),
+  green('Diesel'),
+  yellow('Gas');
+
+  const FuelLabel(this.label);
+  final String label;
 }
 
 class _TransactionForm extends State<TransactionForm> {
@@ -51,37 +56,28 @@ class _TransactionForm extends State<TransactionForm> {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            DropdownMenu<ColorLabel>(
-              initialSelection: ColorLabel.green,
+            DropdownMenu<CarsLabel>(
               requestFocusOnTap: true,
-              label: const Text('Color'),
-              dropdownMenuEntries: ColorLabel.values
-                  .map<DropdownMenuEntry<ColorLabel>>((ColorLabel color) {
-                return DropdownMenuEntry<ColorLabel>(
-                  value: color,
-                  label: color.label,
-                  style: MenuItemButton.styleFrom(
-                    foregroundColor: color.color,
-                  ),
+              label: const Text('Tipo de vehiculo'),
+              width: 220,
+              dropdownMenuEntries: CarsLabel.values
+                  .map<DropdownMenuEntry<CarsLabel>>((CarsLabel car) {
+                return DropdownMenuEntry<CarsLabel>(
+                  value: car,
+                  label: car.label,
                 );
               }).toList(),
             ),
             const SizedBox(width: 24),
-            DropdownMenu<ColorLabel>(
-              initialSelection: ColorLabel.green,
+            DropdownMenu<FuelLabel>(
               requestFocusOnTap: true,
-              label: const Text('Color'),
-              dropdownMenuEntries: ColorLabel.values
-                  .map<DropdownMenuEntry<ColorLabel>>((ColorLabel color) {
-                return DropdownMenuEntry<ColorLabel>(
-                  value: color,
-                  label: color.label,
-                  style: MenuItemButton.styleFrom(
-                    foregroundColor: color.color,
-                  ),
-                );
+              label: const Text('Combustible'),
+              width: 220,
+              dropdownMenuEntries: FuelLabel.values
+                  .map<DropdownMenuEntry<FuelLabel>>((FuelLabel fuel) {
+                return DropdownMenuEntry<FuelLabel>(
+                    value: fuel, label: fuel.label);
               }).toList(),
             )
           ],
@@ -90,46 +86,62 @@ class _TransactionForm extends State<TransactionForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Radio(
-              value: 'Basico',
-              groupValue: selectedRadio,
-              onChanged: (value) {
-                setState(() {
-                  selectedRadio = value.toString();
-                });
-              },
+            Row(
+              children: [
+                const Text('Básico'),
+                Radio(
+                  value: 'Basico',
+                  groupValue: selectedRadio,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRadio = value.toString();
+                    });
+                  },
+                )
+              ],
             ),
-            const Text('Básico'),
-            Radio(
-              value: 'Intermedio',
-              groupValue: selectedRadio,
-              onChanged: (value) {
-                setState(() {
-                  selectedRadio = value.toString();
-                });
-              },
+            Row(
+              children: [
+                const Text('Intermedio'),
+                Radio(
+                  value: 'Intermedio',
+                  groupValue: selectedRadio,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRadio = value.toString();
+                    });
+                  },
+                )
+              ],
             ),
-            const Text('Intermedio'),
-            Radio(
-              value: 'Peritaje',
-              groupValue: selectedRadio,
-              onChanged: (value) {
-                setState(() {
-                  selectedRadio = value.toString();
-                });
-              },
+            Row(
+              children: [
+                const Text('Peritaje'),
+                Radio(
+                  value: 'Peritaje',
+                  groupValue: selectedRadio,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRadio = value.toString();
+                    });
+                  },
+                )
+              ],
             ),
-            const Text('Peritaje'),
-            Radio(
-              value: 'Avaluo total',
-              groupValue: selectedRadio,
-              onChanged: (value) {
-                setState(() {
-                  selectedRadio = value.toString();
-                });
-              },
+            Row(
+              children: [
+                const Text('Avaluo total'),
+                Radio(
+                  value: 'Avaluo total',
+                  groupValue: selectedRadio,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRadio = value.toString();
+                    });
+                  },
+                )
+              ],
             ),
-            const Text('Avaluo total'),
           ],
         ),
         const SizedBox(height: 15),
@@ -137,51 +149,54 @@ class _TransactionForm extends State<TransactionForm> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             const Text(
-              'Adicional:',
-              style: TextStyle(fontSize: 16),
+              'Adicionales:',
+              style: TextStyle(fontSize: 15),
             ),
-            const SizedBox(width: 10),
-            Radio(
-              value: 'Opcion1',
-              groupValue: selectedAdditionalRadio,
-              onChanged: (value) {
-                setState(() {
-                  selectedAdditionalRadio = value.toString();
-                });
-              },
+            Row(
+              children: [
+                const Text('Suspension'),
+                Radio(
+                  value: 'Suspension',
+                  groupValue: selectedAdditionalRadio,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedAdditionalRadio = value.toString();
+                    });
+                  },
+                )
+              ],
             ),
-            const Text('Opción 1'),
-            const SizedBox(width: 10),
-            Radio(
-              value: 'Opcion2',
-              groupValue: selectedAdditionalRadio,
-              onChanged: (value) {
-                setState(() {
-                  selectedAdditionalRadio = value.toString();
-                });
-              },
+            Row(
+              children: [
+                const Text('Compresion'),
+                Radio(
+                  value: 'Compresion',
+                  groupValue: selectedAdditionalRadio,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedAdditionalRadio = value.toString();
+                    });
+                  },
+                )
+              ],
             ),
-            const Text('Opción 2'),
           ],
         ),
         const SizedBox(height: 20),
         ExpansionTile(
-          title: const Text("personas"),
+          title: const Text("Personas"),
           controlAffinity: ListTileControlAffinity.leading,
           children: [
             const SizedBox(height: 10),
-            DropdownMenu<ColorLabel>(
-              initialSelection: ColorLabel.green,
+            DropdownMenu<CarsLabel>(
               requestFocusOnTap: true,
+              menuHeight: 50,
               label: const Text('Color'),
-              dropdownMenuEntries: ColorLabel.values
-                  .map<DropdownMenuEntry<ColorLabel>>((ColorLabel color) {
-                return DropdownMenuEntry<ColorLabel>(
+              dropdownMenuEntries: CarsLabel.values
+                  .map<DropdownMenuEntry<CarsLabel>>((CarsLabel color) {
+                return DropdownMenuEntry<CarsLabel>(
                   value: color,
                   label: color.label,
-                  style: MenuItemButton.styleFrom(
-                    foregroundColor: color.color,
-                  ),
                 );
               }).toList(),
             ),
@@ -281,8 +296,10 @@ class _PersonFormState extends State<PersonForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration:
-                        const InputDecoration(labelText: 'Número de Documento'),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Numero de documento",
+                    ),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese el número de documento';
@@ -295,7 +312,8 @@ class _PersonFormState extends State<PersonForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Expedida en'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Expedida en'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese el lugar de expedición';
@@ -308,7 +326,8 @@ class _PersonFormState extends State<PersonForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Nombre'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Nombre'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese su nombre';
@@ -319,12 +338,14 @@ class _PersonFormState extends State<PersonForm> {
                 ),
               ],
             ),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Apellido'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Apellido'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese su apellido';
@@ -337,7 +358,8 @@ class _PersonFormState extends State<PersonForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Dirección'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Dirección'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese su dirección';
@@ -350,7 +372,8 @@ class _PersonFormState extends State<PersonForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Teléfono'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Teléfono'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese su número de teléfono';
@@ -361,12 +384,14 @@ class _PersonFormState extends State<PersonForm> {
                 ),
               ],
             ),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Correo'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Correo'),
                     validator: (value) {
                       if (value!.isEmpty || !value.contains('@')) {
                         return 'Por favor, ingrese un correo válido';
@@ -409,7 +434,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Placa'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Placa'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese el número de placa';
@@ -422,7 +448,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Marca'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Marca'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Marca';
@@ -435,7 +462,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Linea'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Linea'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Linea';
@@ -448,7 +476,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Modelo'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Modelo'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Modelo';
@@ -459,12 +488,14 @@ class _VehicleFormState extends State<VehicleForm> {
                 ),
               ],
             ),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Tipo'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Tipo'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese tipo';
@@ -477,7 +508,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Clase'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Clase'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese su Clase';
@@ -490,7 +522,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Color'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Color'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Color';
@@ -503,7 +536,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Combustible'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Combustible'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Combustible';
@@ -514,12 +548,14 @@ class _VehicleFormState extends State<VehicleForm> {
                 )
               ],
             ),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Cilindraje'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Cilindraje'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Cilindraje';
@@ -532,7 +568,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Motor'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Motor'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Motor';
@@ -545,7 +582,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Chasis'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Chasis'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese chasis';
@@ -558,7 +596,8 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Serie'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Serie'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese serie';
@@ -569,12 +608,14 @@ class _VehicleFormState extends State<VehicleForm> {
                 )
               ],
             ),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Armado'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Armado'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Armado';
@@ -587,8 +628,9 @@ class _VehicleFormState extends State<VehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration:
-                        const InputDecoration(labelText: 'Numero de seguridad'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Numero de seguridad'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese numero de seguridad';
@@ -631,7 +673,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Placa'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Placa'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese el número de placa';
@@ -644,7 +687,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Marca'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Marca'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Marca';
@@ -657,7 +701,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Linea'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Linea'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Linea';
@@ -670,7 +715,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Modelo'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Modelo'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Modelo';
@@ -681,12 +727,14 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 ),
               ],
             ),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Tipo'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Tipo'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese tipo';
@@ -699,7 +747,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Clase'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Clase'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese su Clase';
@@ -712,7 +761,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Color'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Color'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Color';
@@ -725,7 +775,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Combustible'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Combustible'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Combustible';
@@ -736,12 +787,14 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 )
               ],
             ),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Cilindraje'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Cilindraje'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Cilindraje';
@@ -754,7 +807,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Motor'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Motor'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Motor';
@@ -767,7 +821,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Chasis'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Chasis'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese chasis';
@@ -780,7 +835,8 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Serie'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Serie'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese serie';
@@ -791,12 +847,14 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 )
               ],
             ),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(labelText: 'Armado'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Armado'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Armado';
@@ -809,8 +867,9 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration:
-                        const InputDecoration(labelText: 'Numero de seguridad'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Numero de seguridad'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese numero de seguridad';
@@ -853,8 +912,9 @@ class _PaymentFormState extends State<PaymentForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration:
-                        const InputDecoration(labelText: 'Metodo de pago'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Metodo de pago'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese el número de placa';
@@ -867,8 +927,9 @@ class _PaymentFormState extends State<PaymentForm> {
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration:
-                        const InputDecoration(labelText: 'Valor total a pagar'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Valor total a pagar'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingrese Marca';
