@@ -1,28 +1,53 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
-class TransactionPage extends StatelessWidget {
+class TransactionPage extends StatefulWidget {
   const TransactionPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          Padding(padding: EdgeInsets.all(16.0), child: TransactionForm())
-        ],
-      )),
-    );
-  }
+  // ignore: library_private_types_in_public_api
+  _TransactionPageState createState() => _TransactionPageState();
 }
 
-class TransactionForm extends StatefulWidget {
-  const TransactionForm({super.key});
+class _TransactionPageState extends State<TransactionPage> {
+  static const _steps = [
+    Step(title: Text("Servicio"), content: ServiceForm()),
+    Step(title: Text("Personas"), content: PersonForm()),
+    Step(title: Text("Buscar Vehiculo"), content: VehicleForm()),
+    Step(title: Text("Datos del vehiculo"), content: LegalDataVehicleForm()),
+    Step(title: Text("Informacion del pago"), content: PaymentForm())
+  ];
+
+  int _currentStep = 0;
 
   @override
-  // ignore: library_private_types_in_public_api
-  _TransactionForm createState() => _TransactionForm();
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stepper(
+      steps: _steps,
+      currentStep: _currentStep,
+      onStepContinue: () {
+        setState(() {
+          if (_currentStep < _steps.length - 1) {
+            _currentStep += 1;
+          } else {
+            _currentStep = 0;
+          }
+        });
+      },
+      onStepCancel: () {
+        setState(() {
+          if (_currentStep > 0) {
+            _currentStep -= 1;
+          } else {
+            _currentStep = 0;
+          }
+        });
+      },
+      type: StepperType.vertical,
+    ));
+  }
 }
 
 enum CarsLabel {
@@ -45,11 +70,31 @@ enum FuelLabel {
   final String label;
 }
 
-class _TransactionForm extends State<TransactionForm> {
-  String selectedValue = 'Opción 1';
-  List<String> dropdownItems = ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4'];
-  String selectedRadio = '';
-  String selectedAdditionalRadio = '';
+class ServiceForm extends StatefulWidget {
+  const ServiceForm({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _ServiceFormState createState() => _ServiceFormState();
+}
+
+class _ServiceFormState extends State<ServiceForm> {
+  final String selectedRadio = '';
+  final String selectedAdditionalRadio = '';
+  final List<String> listServices = [
+    "Basico",
+    "Intermedio",
+    "Peritaje",
+    "Avaluo Total",
+  ];
+  final List<String> listAditionalServices = [
+    "Suspension",
+    "Compresion",
+  ];
+  // ignore: non_constant_identifier_names
+  int _service_value = 0;
+  // ignore: non_constant_identifier_names
+  int _add_service_value = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -82,190 +127,60 @@ class _TransactionForm extends State<TransactionForm> {
             )
           ],
         ),
-        const SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        const SizedBox(height: 30),
+        const Row(
           children: [
-            Row(
-              children: [
-                const Text('Básico'),
-                Radio(
-                  value: 'Basico',
-                  groupValue: selectedRadio,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedRadio = value.toString();
-                    });
-                  },
-                )
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Intermedio'),
-                Radio(
-                  value: 'Intermedio',
-                  groupValue: selectedRadio,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedRadio = value.toString();
-                    });
-                  },
-                )
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Peritaje'),
-                Radio(
-                  value: 'Peritaje',
-                  groupValue: selectedRadio,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedRadio = value.toString();
-                    });
-                  },
-                )
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Avaluo total'),
-                Radio(
-                  value: 'Avaluo total',
-                  groupValue: selectedRadio,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedRadio = value.toString();
-                    });
-                  },
-                )
-              ],
-            ),
+            Text('Tipo de servicio:'),
           ],
         ),
-        const SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        const SizedBox(height: 10.0),
+        ResponsiveGridRow(
           children: [
-            const Text(
-              'Adicionales:',
-              style: TextStyle(fontSize: 15),
-            ),
-            Row(
-              children: [
-                const Text('Suspension'),
-                Radio(
-                  value: 'Suspension',
-                  groupValue: selectedAdditionalRadio,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedAdditionalRadio = value.toString();
-                    });
-                  },
-                )
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Compresion'),
-                Radio(
-                  value: 'Compresion',
-                  groupValue: selectedAdditionalRadio,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedAdditionalRadio = value.toString();
-                    });
-                  },
-                )
-              ],
-            ),
+            ResponsiveGridCol(
+              child: Wrap(
+                  spacing: 5.0,
+                  runSpacing: 10,
+                  children: listServices.asMap().entries.map((value) {
+                    return ChoiceChip(
+                      label: Text(value.value),
+                      selected: _service_value == value.key,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          _service_value = (selected ? value.key : null)!;
+                        });
+                      },
+                    );
+                  }).toList()),
+            )
           ],
         ),
-        const SizedBox(height: 20),
-        ExpansionTile(
-          title: const Text("Personas"),
-          controlAffinity: ListTileControlAffinity.leading,
+        const SizedBox(height: 30),
+        const Row(
           children: [
-            const SizedBox(height: 10),
-            DropdownMenu<CarsLabel>(
-              requestFocusOnTap: true,
-              menuHeight: 50,
-              label: const Text('Color'),
-              dropdownMenuEntries: CarsLabel.values
-                  .map<DropdownMenuEntry<CarsLabel>>((CarsLabel color) {
-                return DropdownMenuEntry<CarsLabel>(
-                  value: color,
-                  label: color.label,
-                );
-              }).toList(),
-            ),
-            const PersonForm(),
-            DataTable(
-              columns: const [
-                DataColumn(label: Text('#')),
-                DataColumn(label: Text('Nombre')),
-                DataColumn(label: Text('Apellido')),
-                DataColumn(label: Text('Rol')),
-                DataColumn(label: Text('Cliente')),
-              ],
-              rows: const [
-                DataRow(cells: [
-                  DataCell(Text('1')),
-                  DataCell(Text('John')),
-                  DataCell(Text('Doe')),
-                  DataCell(Text('Desarrollador')),
-                  DataCell(Text('Cliente A')),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('2')),
-                  DataCell(Text('Jane')),
-                  DataCell(Text('Smith')),
-                  DataCell(Text('Diseñador')),
-                  DataCell(Text('Cliente B')),
-                ]),
-                // Agrega más filas según sea necesario
-              ],
-            ),
+            Text('Adicionales:'),
           ],
         ),
-        const ExpansionTile(
-          title: Text("Buscar Vehiculo"),
-          controlAffinity: ListTileControlAffinity.leading,
-          children: [SizedBox(height: 10), VehicleForm()],
+        const SizedBox(height: 10.0),
+        ResponsiveGridRow(
+          children: [
+            ResponsiveGridCol(
+              child: Wrap(
+                  spacing: 5.0,
+                  runSpacing: 10,
+                  children: listAditionalServices.asMap().entries.map((value) {
+                    return ChoiceChip(
+                      label: Text(value.value),
+                      selected: _add_service_value == value.key,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          _add_service_value = (selected ? value.key : null)!;
+                        });
+                      },
+                    );
+                  }).toList()),
+            )
+          ],
         ),
-        const ExpansionTile(
-          title: Text("Datos legales del vehiculo"),
-          controlAffinity: ListTileControlAffinity.leading,
-          children: [SizedBox(height: 10), LegalDataVehicleForm()],
-        ),
-        const ExpansionTile(
-          title: Text("Informacion sobre el metodo de pago"),
-          controlAffinity: ListTileControlAffinity.leading,
-          children: [SizedBox(height: 10), PaymentForm()],
-        ),
-        const SizedBox(height: 15),
-        ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                // color de fondo del botón
-                shape: const RoundedRectangleBorder(),
-                minimumSize: const Size(double.infinity, 60)),
-            child: const Text('Confirmar',
-                style: TextStyle(
-                  fontSize: 18.0, // Tamaño del texto del botón
-                ))),
-        const SizedBox(height: 15),
-        ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                // color de fondo del botón
-                shape: const RoundedRectangleBorder(),
-                minimumSize: const Size(double.infinity, 60)),
-            child: const Text('Cancelar',
-                style: TextStyle(
-                  fontSize: 18.0, // Tamaño del texto del botón
-                ))),
       ],
     );
   }
@@ -289,11 +204,24 @@ class _PersonFormState extends State<PersonForm> {
       child: Form(
         key: _formKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            ResponsiveGridRow(children: [
+              ResponsiveGridCol(
+                  child: DropdownMenu<FuelLabel>(
+                requestFocusOnTap: true,
+                label: const Text('Tipo Persona'),
+                dropdownMenuEntries: FuelLabel.values
+                    .map<DropdownMenuEntry<FuelLabel>>((FuelLabel fuel) {
+                  return DropdownMenuEntry<FuelLabel>(
+                      value: fuel, label: fuel.label);
+                }).toList(),
+              )),
+              ResponsiveGridCol(child: const Text("Cliente: "))
+            ]),
+            ResponsiveGridRow(
               children: [
-                Expanded(
+                ResponsiveGridCol(
+                  md: 6,
                   child: TextFormField(
                     controller: TextEditingController(),
                     decoration: const InputDecoration(
@@ -307,22 +235,12 @@ class _PersonFormState extends State<PersonForm> {
                       return null;
                     },
                   ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Expedida en'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese el lugar de expedición';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
+                )
+              ],
+            ),
+            const SizedBox(height: 16.0),
+            Row(
+              children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
@@ -336,11 +254,7 @@ class _PersonFormState extends State<PersonForm> {
                     },
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
+                const SizedBox(width: 16.0),
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
@@ -354,7 +268,11 @@ class _PersonFormState extends State<PersonForm> {
                     },
                   ),
                 ),
-                const SizedBox(width: 16.0),
+              ],
+            ),
+            const SizedBox(height: 16.0),
+            Row(
+              children: [
                 Expanded(
                   child: TextFormField(
                     controller: TextEditingController(),
@@ -401,7 +319,7 @@ class _PersonFormState extends State<PersonForm> {
                   ),
                 ),
               ],
-            ),
+            )
           ],
         ),
       ),

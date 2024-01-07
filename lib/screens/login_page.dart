@@ -40,23 +40,20 @@ class _LoginForm extends State<LoginForm> {
     return Scaffold(
         body: Center(
       child: Container(
-        margin: const EdgeInsets.all(
-            16.0), // Ajusta el margen alrededor del formulario
+        margin: const EdgeInsets.all(16.0),
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: Colors.white, // Color del fondo del contenedor
-          borderRadius:
-              BorderRadius.circular(8.0), // Borde redondeado del contenedor
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5), // Sombra del contenedor
+              color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
               offset: const Offset(0, 2),
             ),
           ],
         ),
-
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -72,8 +69,7 @@ class _LoginForm extends State<LoginForm> {
                     child: Image.asset("assets/images/logo-sia.png"),
                   ),
                 if (MediaQuery.of(context).size.width > 600)
-                  const SizedBox(
-                      height: 16.0), // Espaciado entre la imagen y el texto
+                  const SizedBox(height: 16.0),
                 const Text(
                   'Iniciar Sesión',
                   style: TextStyle(
