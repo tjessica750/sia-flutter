@@ -27,6 +27,28 @@ class _TransactionPageState extends State<TransactionPage> {
         body: Stepper(
       steps: _steps,
       currentStep: _currentStep,
+      controlsBuilder: (context, details) => Row(
+        children: [
+          const SizedBox(
+            height: 100,
+          ),
+          ElevatedButton(
+            onPressed: details.onStepContinue,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            child:
+                const Text('Siguiente', style: TextStyle(color: Colors.white)),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          ElevatedButton(
+            onPressed: details.onStepCancel,
+            child: const Text('Anterior'),
+          ),
+        ],
+      ),
       onStepContinue: () {
         setState(() {
           if (_currentStep < _steps.length - 1) {
@@ -199,7 +221,7 @@ class _PersonFormState extends State<PersonForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(16.0),
       child: Form(
         key: _formKey,
@@ -207,119 +229,247 @@ class _PersonFormState extends State<PersonForm> {
           children: [
             ResponsiveGridRow(children: [
               ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: DropdownMenu<FuelLabel>(
-                requestFocusOnTap: true,
-                label: const Text('Tipo Persona'),
-                dropdownMenuEntries: FuelLabel.values
-                    .map<DropdownMenuEntry<FuelLabel>>((FuelLabel fuel) {
-                  return DropdownMenuEntry<FuelLabel>(
-                      value: fuel, label: fuel.label);
-                }).toList(),
-              )),
-              ResponsiveGridCol(child: const Text("Cliente: "))
+                    label: const Text('Tipo Persona'),
+                    width: 300,
+                    dropdownMenuEntries: FuelLabel.values
+                        .map<DropdownMenuEntry<FuelLabel>>((FuelLabel fuel) {
+                      return DropdownMenuEntry<FuelLabel>(
+                          value: fuel, label: fuel.label);
+                    }).toList(),
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: const Column(
+                  children: [Text("Cliente:"), Icon(Icons.check)],
+                ),
+              )
             ]),
             ResponsiveGridRow(
               children: [
                 ResponsiveGridCol(
                   md: 6,
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Numero de documento",
+                  lg: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownMenu<FuelLabel>(
+                      label: const Text('Tipo Documento'),
+                      width: 300,
+                      dropdownMenuEntries: FuelLabel.values
+                          .map<DropdownMenuEntry<FuelLabel>>((FuelLabel fuel) {
+                        return DropdownMenuEntry<FuelLabel>(
+                            value: fuel, label: fuel.label);
+                      }).toList(),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese el número de documento';
-                      }
-                      return null;
-                    },
                   ),
-                )
+                ),
+                ResponsiveGridCol(
+                  md: 6,
+                  lg: 4,
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: TextEditingController(),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "Numero de documento",
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Por favor, ingrese el número de documento';
+                          }
+                          return null;
+                        },
+                      )),
+                ),
+                ResponsiveGridCol(
+                  md: 6,
+                  lg: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: TextEditingController(),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Expedida En",
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, ingrese el lugar de expedicion';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                ResponsiveGridCol(
+                    md: 6,
+                    lg: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: TextEditingController(),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "Nombre",
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Por favor, ingrese el nombre';
+                          }
+                          return null;
+                        },
+                      ),
+                    )),
+                ResponsiveGridCol(
+                  md: 6,
+                  lg: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: TextEditingController(),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Apellido",
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, ingrese el apellido';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                ResponsiveGridCol(
+                  md: 6,
+                  lg: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: TextEditingController(),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Direccion",
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, ingrese la direccion';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                ResponsiveGridCol(
+                  md: 6,
+                  lg: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: TextEditingController(),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Telefono",
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, ingrese el telefono';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                ResponsiveGridCol(
+                  md: 6,
+                  lg: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: TextEditingController(),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Correo",
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, ingrese el correo';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(
+              height: 25,
+            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Nombre'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese su nombre';
-                      }
-                      return null;
-                    },
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  child: const Text(
+                    'Agregar',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Apellido'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese su apellido';
-                      }
-                      return null;
-                    },
+                const SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                  ),
+                  child: const Text(
+                    'Cancelar',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Dirección'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese su dirección';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Teléfono'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese su número de teléfono';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
+            const SizedBox(
+              height: 25,
+            ),
+            DataTable(
+              showBottomBorder: true,
+              dividerThickness: 5,
+              columns: const [
+                DataColumn(label: Text('#')),
+                DataColumn(label: Text('Nombre')),
+                DataColumn(label: Text('Apellido')),
+                DataColumn(label: Text('Rol')),
+                DataColumn(label: Text('Cliente')),
+              ],
+              rows: const [
+                DataRow(cells: [
+                  DataCell(Text('1')),
+                  DataCell(Text('John')),
+                  DataCell(Text('Doe')),
+                  DataCell(Text('Admin')),
+                  DataCell(Icon(Icons.check)),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('2')),
+                  DataCell(Text('Jane')),
+                  DataCell(Text('Smith')),
+                  DataCell(Text('User')),
+                  DataCell(Icon(Icons.check)),
+                ]),
+                // Agrega más filas según sea necesario
               ],
             ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Correo'),
-                    validator: (value) {
-                      if (value!.isEmpty || !value.contains('@')) {
-                        return 'Por favor, ingrese un correo válido';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
-            )
           ],
         ),
       ),
@@ -344,221 +494,334 @@ class _VehicleFormState extends State<VehicleForm> {
       padding: const EdgeInsets.all(16.0),
       child: Form(
         key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ResponsiveGridRow(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Placa'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese el número de placa';
-                      }
-                      return null;
-                    },
-                  ),
+            ResponsiveGridCol(
+              md: 4,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownMenu<FuelLabel>(
+                  label: const Text('Buscar por'),
+                  dropdownMenuEntries: FuelLabel.values
+                      .map<DropdownMenuEntry<FuelLabel>>((FuelLabel fuel) {
+                    return DropdownMenuEntry<FuelLabel>(
+                        value: fuel, label: fuel.label);
+                  }).toList(),
                 ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Marca'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Marca';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Linea'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Linea';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Modelo'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Modelo';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
+            ResponsiveGridCol(
+              md: 5,
+              lg: 4,
+              child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Tipo'),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Por favor, ingrese tipo';
+                        return 'Por favor, ingrese un valor';
                       }
                       return null;
                     },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Clase'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese su Clase';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Color'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Color';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Combustible'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Combustible';
-                      }
-                      return null;
-                    },
-                  ),
-                )
-              ],
+                  )),
             ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Cilindraje'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Cilindraje';
-                      }
-                      return null;
-                    },
+            ResponsiveGridCol(
+              md: 3,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  child: const Text(
+                    'Buscar',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Motor'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Motor';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Chasis'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese chasis';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Serie'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese serie';
-                      }
-                      return null;
-                    },
-                  ),
-                )
-              ],
+              ),
             ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Armado'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Armado';
-                      }
-                      return null;
-                    },
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Placa",
                   ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese una placa';
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(width: 16.0),
-                Expanded(
+              ),
+            ),
+            ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: TextEditingController(),
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Numero de seguridad'),
+                      border: OutlineInputBorder(),
+                      labelText: "Marca",
+                    ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Por favor, ingrese numero de seguridad';
+                        return 'Por favor, ingrese marca';
                       }
                       return null;
                     },
                   ),
-                )
-              ],
+                )),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Linea",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese una linea';
+                    }
+                    return null;
+                  },
+                ),
+              ),
             ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Modelo",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese un modelo';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Tipo",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese Tipo';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Clase",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese clase';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Color",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese Color';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Combustible",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese combustible';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Cilindraje",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese cilindraje';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Motor",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese motor';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Chasis",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese chasis';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Serie",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese serie';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Armado",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese armado';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            ResponsiveGridCol(
+              md: 6,
+              lg: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: TextEditingController(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Numero de seguridad",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese Numero de seguridad';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -580,228 +843,327 @@ class _LegalDataVehicleFormState extends State<LegalDataVehicleForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ResponsiveGridRow(
+            children: [
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: TextEditingController(),
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Placa'),
+                      border: OutlineInputBorder(),
+                      labelText: "Pendiente RUNT",
+                    ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Por favor, ingrese el número de placa';
+                        return 'Por favor, ingrese RUNT';
                       }
                       return null;
                     },
                   ),
                 ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Marca'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Marca';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Linea'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Linea';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Modelo'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Modelo';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Tipo'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese tipo';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Clase'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese su Clase';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Color'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Color';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Combustible'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Combustible';
-                      }
-                      return null;
-                    },
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Cilindraje'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Cilindraje';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Motor'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Motor';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Chasis'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese chasis';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Serie'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese serie';
-                      }
-                      return null;
-                    },
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Armado'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingrese Armado';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
+              ),
+              ResponsiveGridCol(
+                  md: 6,
+                  lg: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: TextEditingController(),
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Numero de seguridad'),
+                        labelText: "Pignoracion RUNT",
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, ingrese Pignoracion RUNT';
+                        }
+                        return null;
+                      },
+                    ),
+                  )),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Multas por SIMIT",
+                    ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Por favor, ingrese numero de seguridad';
+                        return 'Por favor, ingrese Multas por SIMIT';
                       }
                       return null;
                     },
                   ),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Timbre",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese timbre';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Impuestos",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese impuestos';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Licencia Transito",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese licencia transito';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Tarjeta de propiedad",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese tarjeta de propiedad';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Siniestro",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese siniestro';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Declaracion de importacion",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese declaracion de importacion';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Cod. Fasecolda",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, Cod. Fasecolda';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Matriculado",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese matriculado';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Matriculado Fecha",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese matriculado fecha';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "SOAT",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese SOAT';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Fecha de vencimiento",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, ingrese fecha de vencimiento';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              ResponsiveGridCol(
+                md: 6,
+                lg: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                        child: const Text(
+                          'Guardar',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                        ),
+                        child: const Text(
+                          'Cancelar',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
 
