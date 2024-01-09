@@ -1,6 +1,12 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
+import 'package:test_driven_app/entities/fuel_entity.dart';
+import 'package:test_driven_app/entities/service_type_entity.dart';
+import 'package:test_driven_app/entities/vehicle_type_entity.dart';
+import 'package:test_driven_app/services/fuel_service.dart';
+import 'package:test_driven_app/services/service_service.dart';
+import 'package:test_driven_app/services/vehicle_service.dart';
 
 class TransactionPage extends StatefulWidget {
   const TransactionPage({super.key});
@@ -67,7 +73,7 @@ class _TransactionPageState extends State<TransactionPage> {
           }
         });
       },
-      type: StepperType.vertical,
+      type: StepperType.horizontal,
     ));
   }
 }
@@ -118,35 +124,66 @@ class _ServiceFormState extends State<ServiceForm> {
   // ignore: non_constant_identifier_names
   int _add_service_value = 0;
 
+  late Future<Iterable<Fuel>> futureFuel;
+  late Future<Iterable<VehicleType>> futureVehicleType;
+  late Future<Iterable<ServiceType>> futureServiceType;
+
+  @override
+  void initState() {
+    super.initState();
+    futureFuel = fetchFuelTypes();
+    futureVehicleType = fetchVehicleTypes();
+    futureServiceType = fetchServiceTypes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
           children: [
-            DropdownMenu<CarsLabel>(
-              requestFocusOnTap: true,
-              label: const Text('Tipo de vehiculo'),
-              width: 220,
-              dropdownMenuEntries: CarsLabel.values
-                  .map<DropdownMenuEntry<CarsLabel>>((CarsLabel car) {
-                return DropdownMenuEntry<CarsLabel>(
-                  value: car,
-                  label: car.label,
-                );
-              }).toList(),
-            ),
+            FutureBuilder<Iterable<VehicleType>>(
+                future: futureVehicleType,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return DropdownMenu<VehicleType>(
+                      requestFocusOnTap: true,
+                      label: const Text('Tipo Vehiculo'),
+                      width: 220,
+                      dropdownMenuEntries: snapshot.data!
+                          .map<DropdownMenuEntry<VehicleType>>(
+                              (VehicleType vehicleType) {
+                        return DropdownMenuEntry<VehicleType>(
+                            value: vehicleType, label: vehicleType.Nombre);
+                      }).toList(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+
+                  return const CircularProgressIndicator();
+                }),
             const SizedBox(width: 24),
-            DropdownMenu<FuelLabel>(
-              requestFocusOnTap: true,
-              label: const Text('Combustible'),
-              width: 220,
-              dropdownMenuEntries: FuelLabel.values
-                  .map<DropdownMenuEntry<FuelLabel>>((FuelLabel fuel) {
-                return DropdownMenuEntry<FuelLabel>(
-                    value: fuel, label: fuel.label);
-              }).toList(),
-            )
+            FutureBuilder<Iterable<Fuel>>(
+                future: futureFuel,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return DropdownMenu<Fuel>(
+                      requestFocusOnTap: true,
+                      label: const Text('Combustible'),
+                      width: 220,
+                      dropdownMenuEntries: snapshot.data!
+                          .map<DropdownMenuEntry<Fuel>>((Fuel fuel) {
+                        return DropdownMenuEntry<Fuel>(
+                            value: fuel, label: fuel.Nombre);
+                      }).toList(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+
+                  return const CircularProgressIndicator();
+                })
           ],
         ),
         const SizedBox(height: 30),
@@ -159,20 +196,31 @@ class _ServiceFormState extends State<ServiceForm> {
         ResponsiveGridRow(
           children: [
             ResponsiveGridCol(
-              child: Wrap(
-                  spacing: 5.0,
-                  runSpacing: 10,
-                  children: listServices.asMap().entries.map((value) {
-                    return ChoiceChip(
-                      label: Text(value.value),
-                      selected: _service_value == value.key,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          _service_value = (selected ? value.key : null)!;
-                        });
-                      },
-                    );
-                  }).toList()),
+              child: FutureBuilder<Iterable<ServiceType>>(
+                  future: futureServiceType,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Wrap(
+                          spacing: 5.0,
+                          runSpacing: 10,
+                          children: snapshot.data!.map((value) {
+                            return ChoiceChip(
+                              label: Text(value.Nombre),
+                              selected: _service_value == value.Id,
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  _service_value =
+                                      (selected ? value.Id : null)!;
+                                });
+                              },
+                            );
+                          }).toList());
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    return const CircularProgressIndicator();
+                  }),
             )
           ],
         ),
