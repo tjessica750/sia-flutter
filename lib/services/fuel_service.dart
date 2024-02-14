@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:test_driven_app/entities/fuel_entity.dart';
 import 'package:test_driven_app/helpers/http_request.dart';
 
@@ -11,7 +12,9 @@ Future<Iterable<Fuel>> fetchFuelTypes() async {
     return (response["data"]["body"] as List<dynamic>)
         .map((e) => Fuel.fromJson(e));
   } catch (e) {
-    print(e);
+    if (kDebugMode) {
+      print(e);
+    }
 
     throw Exception('Failed to load album');
   }
