@@ -6,8 +6,8 @@ import 'package:test_driven_app/auth/authentication_cubit.dart';
 import 'package:test_driven_app/components/alert.dart';
 import 'package:test_driven_app/components/loader_overlay.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class ConfirmPasswordPage extends StatelessWidget {
+  const ConfirmPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,25 +20,26 @@ class LoginPage extends StatelessWidget {
             width: 600,
             height: 600,
             child: Center(
-              child: LoginForm(),
+              child: ConfimPasswordForm(),
             )),
       )),
     );
   }
 }
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class ConfimPasswordForm extends StatefulWidget {
+  const ConfimPasswordForm({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _LoginForm createState() => _LoginForm();
+  _ConfimPasswordFormState createState() => _ConfimPasswordFormState();
 }
 
-class _LoginForm extends State<LoginForm> {
+class _ConfimPasswordFormState extends State<ConfimPasswordForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   String? _errorMessage;
 
@@ -77,7 +78,7 @@ class _LoginForm extends State<LoginForm> {
                 if (MediaQuery.of(context).size.width > 600)
                   const SizedBox(height: 16.0),
                 const Text(
-                  'Iniciar Sesión',
+                  'Cambiar Contraseña',
                   style: TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.bold,
@@ -85,7 +86,7 @@ class _LoginForm extends State<LoginForm> {
                   textAlign: TextAlign.center,
                 ),
                 const Text(
-                  'Sistema de identificacion  de automotores avaluo comercial',
+                  'se necesita que cree una nueva contraseña para iniciar sesion',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.normal,
@@ -94,26 +95,26 @@ class _LoginForm extends State<LoginForm> {
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
+                  controller: _passwordController,
+                  obscureText: true,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: "Correo",
+                    labelText: "Nueva contraseña",
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Por favor, ingresa tu correo electrónico';
+                      return 'Por favor, ingresa tu contraseña';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
-                  controller: _passwordController,
+                  controller: _confirmPasswordController,
                   obscureText: true,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: "Contraseña",
+                    labelText: "Confirma nueva contraseña",
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -127,25 +128,37 @@ class _LoginForm extends State<LoginForm> {
                 ElevatedButton(
                     onPressed: () async {
                       safePrint("iniciando sesion");
-                      if (_formKey.currentState!.validate()) {
-                        LoaderOverlay.show(context);
-                        try {
-                          await context.read<AuthenticationCubit>().signIn(
-                              _emailController.text, _passwordController.text);
-                        } catch (e) {
-                          setState(() {
-                            _errorMessage = e.toString();
-                          });
-                        }
-                        LoaderOverlay.hide();
+                      if (!_formKey.currentState!.validate()) {
+                        return;
                       }
+
+                      if (_passwordController.text.trim() !=
+                          _confirmPasswordController.text.trim()) {
+                        safePrint("contrasenas icorrectas");
+                        return setState(() {
+                          _errorMessage = "contraseñas deben ser iguales";
+                        });
+                      }
+
+                      LoaderOverlay.show(context);
+                      try {
+                        await context
+                            .read<AuthenticationCubit>()
+                            .confirmSignInWithNewPassword(
+                                _passwordController.text.trim());
+                      } catch (e) {
+                        setState(() {
+                          _errorMessage = e.toString();
+                        });
+                      }
+                      LoaderOverlay.hide();
                     },
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0))),
                         minimumSize: MaterialStateProperty.all(
                             const Size(double.infinity, 60))),
-                    child: const Text('Iniciar sesión',
+                    child: const Text('Confirmar cambio de contraseña',
                         style: TextStyle(
                           fontSize: 18.0, // Tamaño del texto del botón
                         ))),
