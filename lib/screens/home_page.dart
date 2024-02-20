@@ -4,6 +4,7 @@ import 'package:test_driven_app/auth/authentication_cubit.dart';
 import 'package:test_driven_app/components/loader_overlay.dart';
 import 'package:test_driven_app/screens/init_page.dart';
 import 'package:test_driven_app/screens/orders_page.dart';
+import 'package:test_driven_app/screens/photo_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,7 +16,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[InitPage(), OrdersPage()];
+  static const List<Widget> _widgetOptions = <Widget>[
+    InitPage(),
+    OrdersPage(),
+    PhotoPage()
+  ];
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +70,20 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pop(context);
                   setState(() {
                     _selectedIndex = 1;
+                  });
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  "Fotos",
+                  style: TextStyle(color: Colors.black87),
+                ),
+                leading: const Icon(Icons.photo_camera_back_outlined,
+                    color: Colors.black87),
+                onTap: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    _selectedIndex = 2;
                   });
                 },
               ),

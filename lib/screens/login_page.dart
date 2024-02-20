@@ -11,19 +11,15 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: Card(
-        elevation: 0,
-        color: Theme.of(context).colorScheme.surfaceVariant,
-        child: const SizedBox(
-            width: 600,
-            height: 600,
-            child: Center(
-              child: LoginForm(),
-            )),
-      )),
-    );
+    return const Scaffold(
+        body: Center(
+      child: SizedBox(
+          width: 600,
+          height: 600,
+          child: Center(
+            child: LoginForm(),
+          )),
+    ));
   }
 }
 
@@ -43,9 +39,14 @@ class _LoginForm extends State<LoginForm> {
   String? _errorMessage;
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
+    return SingleChildScrollView(
+        child: Center(
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
@@ -68,14 +69,12 @@ class _LoginForm extends State<LoginForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                if (MediaQuery.of(context).size.width > 600)
-                  SizedBox(
-                    height: 150.0,
-                    width: 150.0, // Altura de la imagen
-                    child: Image.asset("assets/images/logo-sia.png"),
-                  ),
-                if (MediaQuery.of(context).size.width > 600)
-                  const SizedBox(height: 16.0),
+                SizedBox(
+                  height: 150.0,
+                  width: 150.0, // Altura de la imagen
+                  child: Image.asset("assets/images/logo-sia.png"),
+                ),
+                const SizedBox(height: 16.0),
                 const Text(
                   'Iniciar Sesión',
                   style: TextStyle(

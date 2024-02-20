@@ -81,7 +81,12 @@ class AuthenticationWrapper extends StatelessWidget {
             break;
         }
 
-        return const CircularProgressIndicator();
+        return Container(
+          color: Colors.white.withOpacity(0.5),
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
       },
     );
   }
