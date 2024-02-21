@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:test_driven_app/screens/photo_page.dart';
 
 class PhotoPanelControlPage extends StatefulWidget {
-  const PhotoPanelControlPage({super.key});
+  final PhotoPart photoPart;
+
+  const PhotoPanelControlPage({super.key, required this.photoPart});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -19,41 +25,63 @@ class _PhotoPanelControlPageState extends State<PhotoPanelControlPage> {
     super.dispose();
   }
 
+  void takePictureFromFrontCamera(BuildContext context) async {
+    final picker = ImagePicker();
+
+    var image = await picker.pickImage(
+        maxHeight: 800,
+        maxWidth: 800,
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.front);
+
+    if (image == null) {
+      return;
+    }
+
+    widget.photoPart.photo = File(image.path);
+
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context, widget.photoPart);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-        fit: BoxFit.cover,
-        image: NetworkImage(
-          'assets/images/car.jpg',
+        floatingActionButton: FloatingActionButton.large(
+          onPressed: () {
+            takePictureFromFrontCamera(context);
+          },
+          child: const SizedBox(
+            child: Icon(Icons.add_a_photo),
+          ),
         ),
-      )),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
+        body: Center(
+          child: Column(
             children: [
-              Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16, 44, 16, 0),
-                  child: IconButton.filled(
-                      hoverColor: Colors.transparent,
-                      icon: const Icon(
-                        Icons.arrow_back_rounded,
-                        size: 30,
-                      ),
-                      onPressed: () async {
-                        Navigator.pop(context);
-                      }))
+              Row(
+                children: [
+                  Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(16, 44, 16, 0),
+                      child: IconButton.filled(
+                          icon: const Icon(
+                            Icons.arrow_back_rounded,
+                            size: 30,
+                          ),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                          })),
+                ],
+              ),
+              SizedBox(
+                  child: widget.photoPart.photo == null
+                      ? const Text('No se ha seleccionado una imagen.')
+                      : Image.file(
+                          widget.photoPart.photo!,
+                          fit: BoxFit.cover,
+                        )),
             ],
-          )
-        ],
-      ),
-    )));
+          ),
+        ));
   }
 }

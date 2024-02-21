@@ -1,5 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test_driven_app/screens/photo_panel_control_page.dart';
+
+class PhotoPart {
+  final String name;
+  File? photo;
+
+  PhotoPart({required this.name, this.photo});
+}
 
 class PhotoPage extends StatefulWidget {
   const PhotoPage({super.key});
@@ -10,6 +18,15 @@ class PhotoPage extends StatefulWidget {
 }
 
 class _PhotoPageState extends State<PhotoPage> {
+  final List<PhotoPart> photoParts = [
+    PhotoPart(name: "Frontal"),
+    PhotoPart(name: "Trasera"),
+    PhotoPart(name: "Izquierda"),
+    PhotoPart(name: "Derecha"),
+    PhotoPart(name: "Diagonal Izquierda-Derecha"),
+    PhotoPart(name: "Diagonal Derecha-Izquierda"),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -29,102 +46,36 @@ class _PhotoPageState extends State<PhotoPage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           ListView(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            children: [
-              ListTile(
-                title: const Text(
-                  'Frontal',
-                ),
-                trailing: const Icon(
-                  Icons.check_box,
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PhotoPanelControlPage()));
-                },
-                dense: false,
-              ),
-              ListTile(
-                title: const Text(
-                  'Trasera',
-                ),
-                trailing: const Icon(
-                  Icons.check_box,
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PhotoPanelControlPage()));
-                },
-                dense: false,
-              ),
-              ListTile(
-                title: const Text(
-                  'Izquierda',
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PhotoPanelControlPage()));
-                },
-                trailing: const Icon(
-                  Icons.check_box,
-                ),
-                dense: false,
-              ),
-              ListTile(
-                title: const Text(
-                  'Derecha',
-                ),
-                trailing: const Icon(
-                  Icons.check_box,
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PhotoPanelControlPage()));
-                },
-                dense: false,
-              ),
-              ListTile(
-                title: const Text(
-                  'Diagonal Izquierda-Derecha',
-                ),
-                trailing: const Icon(
-                  Icons.check_box,
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PhotoPanelControlPage()));
-                },
-                dense: false,
-              ),
-              ListTile(
-                title: const Text(
-                  'Diagonal Derecha-Izquierda',
-                ),
-                trailing: const Icon(
-                  Icons.check_box_outline_blank,
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PhotoPanelControlPage()));
-                },
-                dense: false,
-              ),
-            ],
-          ),
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              children: photoParts
+                  .map((photoPart) => ListTile(
+                        title: Text(
+                          photoPart.name,
+                        ),
+                        trailing: Icon(
+                          photoPart.photo != null
+                              ? Icons.check_box
+                              : Icons.check_box_outline_blank_rounded,
+                        ),
+                        onTap: () async {
+                          var partUpdated = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PhotoPanelControlPage(
+                                      photoPart: photoPart)));
+
+                          if (partUpdated == null) {
+                            return;
+                          }
+
+                          setState(() {
+                            photoPart.photo = (partUpdated as PhotoPart).photo;
+                          });
+                        },
+                        dense: false,
+                      ))
+                  .toList()),
         ],
       ),
     ));

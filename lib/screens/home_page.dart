@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_driven_app/auth/authentication_cubit.dart';
 import 'package:test_driven_app/components/loader_overlay.dart';
+import 'package:test_driven_app/screens/avaluo_page.dart';
 import 'package:test_driven_app/screens/init_page.dart';
 import 'package:test_driven_app/screens/orders_page.dart';
 import 'package:test_driven_app/screens/photo_page.dart';
@@ -19,7 +20,8 @@ class _HomePageState extends State<HomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     InitPage(),
     OrdersPage(),
-    PhotoPage()
+    PhotoPage(),
+    AvaluoPage()
   ];
 
   @override
@@ -84,6 +86,20 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pop(context);
                   setState(() {
                     _selectedIndex = 2;
+                  });
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  "Avaluo",
+                  style: TextStyle(color: Colors.black87),
+                ),
+                leading:
+                    const Icon(Icons.assignment_add, color: Colors.black87),
+                onTap: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    _selectedIndex = 3;
                   });
                 },
               ),
