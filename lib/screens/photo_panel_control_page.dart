@@ -47,6 +47,7 @@ class _PhotoPanelControlPageState extends State<PhotoPanelControlPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(title: const Text("Tomar fotografia")),
         floatingActionButton: FloatingActionButton.large(
           onPressed: () {
             takePictureFromFrontCamera(context);
@@ -58,21 +59,6 @@ class _PhotoPanelControlPageState extends State<PhotoPanelControlPage> {
         body: Center(
           child: Column(
             children: [
-              Row(
-                children: [
-                  Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16, 44, 16, 0),
-                      child: IconButton.filled(
-                          icon: const Icon(
-                            Icons.arrow_back_rounded,
-                            size: 30,
-                          ),
-                          onPressed: () async {
-                            Navigator.pop(context);
-                          })),
-                ],
-              ),
               SizedBox(
                   child: widget.photoPart.photo == null
                       ? const Text('No se ha seleccionado una imagen.')

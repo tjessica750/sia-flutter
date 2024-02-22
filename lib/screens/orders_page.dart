@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:test_driven_app/components/main_drawer.dart';
 import 'package:test_driven_app/entities/job_order_entity.dart';
+import 'package:test_driven_app/screens/avaluo_page.dart';
 import 'package:test_driven_app/services/job_order_service.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -30,7 +32,9 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(children: [
+      appBar: AppBar(title: const Text("Ordenes")),
+      drawer: const MainDrawer(),
+      body: ListView(padding: const EdgeInsets.all(20), children: [
         Row(
           children: [
             Expanded(
@@ -242,7 +246,13 @@ class _OrdersPageState extends State<OrdersPage> {
                         children: [
                           IconButton.filled(
                               iconSize: 30,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AvaluoPage()));
+                              },
                               icon: const Icon(Icons.start_sharp,
                                   color: Colors.green)),
                           IconButton.filled(

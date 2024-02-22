@@ -46,7 +46,7 @@ class _CustomCheckboxGroupState extends State<CustomCheckboxGroup> {
                       strokeAlign: 1,
                       width: 1,
                       color: Color(int.parse('0xFFE0E0F9')))),
-                  minimumSize: MaterialStateProperty.all(const Size(150, 75)),
+                  minimumSize: MaterialStateProperty.all(const Size(100, 75)),
                   backgroundColor: MaterialStateProperty.all(
                       widget.diagnosticOptions[i].isSelected
                           ? widget.diagnosticOptions[i].selectedColor
