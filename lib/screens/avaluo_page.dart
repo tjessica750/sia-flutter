@@ -1,10 +1,13 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
+import 'package:test_driven_app/entities/job_order_entity.dart';
 import 'package:test_driven_app/screens/parts_page.dart';
 
 class AvaluoPage extends StatefulWidget {
-  const AvaluoPage({super.key});
+  final JobOrderEntity jobOrder;
+
+  const AvaluoPage({super.key, required this.jobOrder});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -12,6 +15,11 @@ class AvaluoPage extends StatefulWidget {
 }
 
 class _AvaluoPagePageState extends State<AvaluoPage> {
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +66,9 @@ class _AvaluoPagePageState extends State<AvaluoPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const PartsPage()));
+                                  builder: (context) => PartsPage(
+                                        order: widget.jobOrder,
+                                      )));
                         },
                         child: const Text("Siguiente",
                             style: TextStyle(
@@ -97,16 +107,18 @@ class _AvaluoPagePageState extends State<AvaluoPage> {
                           right: BorderSide(
                               width: 2,
                               color: Color(int.parse('0xFFE0E0F9'))))),
-                  child: const Padding(
-                    padding: EdgeInsets.all(20),
-                    child: AvaluoForm(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: AvaluoForm(jobOrder: widget.jobOrder),
                   ))
             ])));
   }
 }
 
 class AvaluoForm extends StatefulWidget {
-  const AvaluoForm({super.key});
+  final JobOrderEntity jobOrder;
+
+  const AvaluoForm({super.key, required this.jobOrder});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -122,6 +134,8 @@ class _AvaluoForm extends State<AvaluoForm> {
           children: [
             Expanded(
                 child: TextFormField(
+              initialValue: widget.jobOrder.Placa,
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Placa",
@@ -130,12 +144,14 @@ class _AvaluoForm extends State<AvaluoForm> {
             const SizedBox(
               width: 15,
             ),
-            const Expanded(
-              child: DropdownMenu(
-                requestFocusOnTap: true,
-                label: Text('Marca'),
-                width: 200,
-                dropdownMenuEntries: [],
+            Expanded(
+              child: TextFormField(
+                initialValue: widget.jobOrder.Modelo,
+                readOnly: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Marca",
+                ),
               ),
             )
           ],
@@ -147,6 +163,8 @@ class _AvaluoForm extends State<AvaluoForm> {
           children: [
             Expanded(
                 child: TextFormField(
+              initialValue: widget.jobOrder.Linea,
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Linea",
@@ -157,6 +175,8 @@ class _AvaluoForm extends State<AvaluoForm> {
             ),
             Expanded(
                 child: TextFormField(
+              initialValue: widget.jobOrder.Modelo,
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Modelo",
@@ -169,12 +189,13 @@ class _AvaluoForm extends State<AvaluoForm> {
         ),
         Row(
           children: [
-            const Expanded(
-              child: DropdownMenu(
-                requestFocusOnTap: true,
-                label: Text('Clase'),
-                width: 200,
-                dropdownMenuEntries: [],
+            Expanded(
+              child: TextFormField(
+                readOnly: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Clase",
+                ),
               ),
             ),
             const SizedBox(
@@ -182,6 +203,8 @@ class _AvaluoForm extends State<AvaluoForm> {
             ),
             Expanded(
                 child: TextFormField(
+              initialValue: widget.jobOrder.TipoVehiculo,
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Tipo",
@@ -196,6 +219,8 @@ class _AvaluoForm extends State<AvaluoForm> {
           children: [
             Expanded(
                 child: TextFormField(
+              initialValue: widget.jobOrder.Color,
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Color",
@@ -206,6 +231,7 @@ class _AvaluoForm extends State<AvaluoForm> {
             ),
             Expanded(
                 child: TextFormField(
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Combustible",
@@ -220,6 +246,8 @@ class _AvaluoForm extends State<AvaluoForm> {
           children: [
             Expanded(
                 child: TextFormField(
+              initialValue: widget.jobOrder.NumSerie,
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Serie",
@@ -230,6 +258,8 @@ class _AvaluoForm extends State<AvaluoForm> {
             ),
             Expanded(
                 child: TextFormField(
+              initialValue: widget.jobOrder.NumMotor,
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Motor",
@@ -244,6 +274,7 @@ class _AvaluoForm extends State<AvaluoForm> {
           children: [
             Expanded(
                 child: TextFormField(
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Kilometraje",
@@ -254,6 +285,7 @@ class _AvaluoForm extends State<AvaluoForm> {
             ),
             Expanded(
                 child: TextFormField(
+              readOnly: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "COD.FASECOLDA",

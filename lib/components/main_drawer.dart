@@ -30,7 +30,7 @@ class MainDrawer extends StatelessWidget {
               leading: const Icon(Icons.home, color: Colors.black87),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const InitPage()));
               },
             ),
@@ -42,7 +42,7 @@ class MainDrawer extends StatelessWidget {
               leading: const Icon(Icons.toc, color: Colors.black87),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const OrdersPage()));
