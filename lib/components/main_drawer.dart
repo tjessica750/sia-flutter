@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_driven_app/auth/authentication_cubit.dart';
 import 'package:test_driven_app/components/loader_overlay.dart';
-import 'package:test_driven_app/screens/init_page.dart';
+import 'package:test_driven_app/screens/home_page.dart';
 import 'package:test_driven_app/screens/orders_page.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -31,7 +31,7 @@ class MainDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const InitPage()));
+                    MaterialPageRoute(builder: (context) => const HomePage()));
               },
             ),
             ListTile(

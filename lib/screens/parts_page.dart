@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:test_driven_app/components/future_layout.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
@@ -18,62 +20,75 @@ class PartsPage extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _PartsPageState createState() => _PartsPageState();
 }
 
 class _PartsPageState extends State<PartsPage> {
-  late List<PartTypeEntity> partTypes = [];
-  late List<AccessoriePartEntity> currentPartAccesories = [];
-  late int currentPartIndex = 0;
-  late Future<List<PartTypeEntity>> partTypesFuture;
+  List<PartTypeEntity> partTypes = [];
+  int currentPartIndex = 0;
+  Future<List<PartTypeEntity>> partTypesFuture = fetchPartTypes();
+  bool isLoading = false;
+  Map<int, List<AccessoriePartEntity>> accesories = {};
+  Map<AccessoriePartEntity, Map<String, dynamic>> accesoriesFormData = {};
 
   @override
   void initState() {
+    safePrint(widget.order);
     super.initState();
-    partTypesFuture = fetchPartTypes().then((value) {
+    partTypesFuture.then((value) {
       setState(() {
         partTypes = value;
+        _getPartAccesories(currentPartIndex);
       });
-
-      return value;
     });
   }
 
   void _updateCurrentPart(int index) {
     setState(() {
       currentPartIndex = index;
-      _getPartAccesories();
+      if (accesories[index] == null || accesories[index]!.isEmpty) {
+        _getPartAccesories(index);
+      }
+      safePrint(accesoriesFormData);
     });
   }
 
-  void _getPartAccesories() async {
-    PartTypeEntity? selectedPart = partTypes[currentPartIndex];
+  void _getPartAccesories(int index) async {
+    PartTypeEntity selectedPart = partTypes[index];
 
-    // ignore: unnecessary_null_comparison
-    if (selectedPart == null) {
-      return;
-    }
+    setState(() {
+      isLoading = true;
+    });
 
-    List<AccessoriePartEntity> accesories =
+    List<AccessoriePartEntity> accesoriesFetched =
         await fetchAccesorieParts(selectedPart.Id, widget.order.IdTipoVehiculo);
 
     setState(() {
-      currentPartAccesories = accesories;
+      isLoading = false;
+      accesories[index] = accesoriesFetched;
+
+      for (var accessory in accesoriesFetched) {
+        accesoriesFormData[accessory] = {'quantity': 0, 'state': null};
+      }
     });
+  }
+
+  bool _validateCurrentState(AccessoriePartEntity accesorie, String state) {
+    return accesoriesFormData[accesorie]!["state"] == state;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Formulario de partes")),
-        drawer: const MainDrawer(),
-        body: FutureLayout(
-          future: partTypesFuture,
-          initialData: const [],
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Column(children: [
+      appBar: AppBar(title: const Text("Formulario de partes")),
+      drawer: const MainDrawer(),
+      body: FutureLayout(
+        future: partTypesFuture,
+        initialData: const [],
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -120,30 +135,29 @@ class _PartsPageState extends State<PartsPage> {
                       )
                     ],
                   ),
-                  const Text(
-                    "Revision #000001",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  Text(
+                    "Revision #${widget.order.NumeroRevision.toString().padLeft(10, '0')}",
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.bold),
                   )
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.all(10),
-                color: Color(int.parse('0xFFE0E0F9')),
+                color: const Color(0xFFE0E0F9),
                 width: double.infinity,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton.filled(
-                      onPressed: () {
-                        if (currentPartIndex > 0) {
-                          _updateCurrentPart(currentPartIndex - 1);
-                        }
-                      },
-                      icon: const Icon(Icons.navigate_before_rounded),
-                    ),
+                    Visibility(
+                        visible: currentPartIndex > 0,
+                        child: IconButton.filled(
+                          onPressed: () {
+                            _updateCurrentPart(currentPartIndex - 1);
+                          },
+                          icon: const Icon(Icons.navigate_before_rounded),
+                        )),
                     Text(
                       partTypes.isNotEmpty
                           ? partTypes[currentPartIndex].Nombre
@@ -151,29 +165,35 @@ class _PartsPageState extends State<PartsPage> {
                       style: const TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    IconButton.filled(
-                      onPressed: () {
-                        if (currentPartIndex < partTypes.length - 1) {
-                          _updateCurrentPart(currentPartIndex + 1);
-                        }
-                      },
-                      icon: const Icon(Icons.navigate_next_rounded),
-                    ),
+                    Visibility(
+                        visible: currentPartIndex < partTypes.length - 1,
+                        child: IconButton.filled(
+                          onPressed: () {
+                            _updateCurrentPart(currentPartIndex + 1);
+                          },
+                          icon: const Icon(Icons.navigate_next_rounded),
+                        )),
                   ],
                 ),
               ),
               Container(
                 padding: const EdgeInsets.all(20),
                 child: Column(
-                  children: currentPartAccesories
-                      .map(
-                        (accesorie) => Container(
+                  children: [
+                    if (isLoading)
+                      const CircularProgressIndicator()
+                    else if (accesories[currentPartIndex] == null ||
+                        accesories[currentPartIndex]!.isEmpty)
+                      const Text("No se encontraron datos para mostrar")
+                    else
+                      ...accesories[currentPartIndex]!.map((accessorie) {
+                        return Container(
                           padding: const EdgeInsets.only(top: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                accesorie.Nombre,
+                                accessorie.Nombre,
                                 style: const TextStyle(
                                   fontSize: 23,
                                   fontWeight: FontWeight.bold,
@@ -181,13 +201,22 @@ class _PartsPageState extends State<PartsPage> {
                               ),
                               Row(
                                 children: [
-                                  const SizedBox(
+                                  SizedBox(
                                     width: 90,
-                                    child: TextField(
+                                    child: TextFormField(
+                                      onChanged: (value) {
+                                        accesoriesFormData[accessorie]![
+                                                "quantity"] =
+                                            int.parse(
+                                                value.isNotEmpty ? value : '0');
+                                      },
+                                      initialValue: accesoriesFormData[
+                                              accessorie]!["quantity"]
+                                          .toString(),
                                       keyboardType:
-                                          TextInputType.numberWithOptions(
+                                          const TextInputType.numberWithOptions(
                                               decimal: false, signed: false),
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
                                         labelText: "Cant.",
                                       ),
@@ -197,20 +226,27 @@ class _PartsPageState extends State<PartsPage> {
                                     width: 15,
                                   ),
                                   CustomCheckboxGroup(
+                                    onChange: (selectedValue) {
+                                      accesoriesFormData[accessorie]!["state"] =
+                                          selectedValue.name;
+                                    },
                                     diagnosticOptions: [
                                       DiagnosticOption(
-                                        isSelected: false,
+                                        isSelected: _validateCurrentState(
+                                            accessorie, "B"),
                                         name: "B",
                                         selectedColor: const Color.fromARGB(
                                             255, 175, 233, 108),
                                       ),
                                       DiagnosticOption(
-                                        isSelected: false,
+                                        isSelected: _validateCurrentState(
+                                            accessorie, "R"),
                                         name: "R",
                                         selectedColor: Colors.lightBlueAccent,
                                       ),
                                       DiagnosticOption(
-                                        isSelected: false,
+                                        isSelected: _validateCurrentState(
+                                            accessorie, "M"),
                                         name: "M",
                                         selectedColor: Colors.redAccent,
                                       ),
@@ -220,13 +256,15 @@ class _PartsPageState extends State<PartsPage> {
                               )
                             ],
                           ),
-                        ),
-                      )
-                      .toList(),
+                        );
+                      }),
+                  ],
                 ),
               ),
-            ]),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

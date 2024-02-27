@@ -17,7 +17,9 @@ class AuthenticationCubit extends Cubit<AuthenticationStatus> {
 
   void checkAuthStatus() async {
     try {
-      await Amplify.Auth.getCurrentUser();
+      AuthUser response = await Amplify.Auth.getCurrentUser();
+
+      safePrint(response);
 
       emit(AuthenticationStatus.authenticated);
     } catch (e) {

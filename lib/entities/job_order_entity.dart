@@ -15,6 +15,7 @@ class JobOrderEntity {
   final String Linea;
   final String Placa;
   final String Modelo;
+  final int NumeroRevision;
   final String Color;
   final String NumMotor;
   final String NumArmado;
@@ -37,6 +38,7 @@ class JobOrderEntity {
       required this.IdLinea,
       required this.Linea,
       required this.Placa,
+      required this.NumeroRevision,
       required this.Modelo,
       required this.Color,
       required this.NumMotor,
@@ -63,6 +65,7 @@ class JobOrderEntity {
         'TipoVehiculo': String TipoVehiculo,
         'Placa': String Placa,
         'Modelo': String Modelo,
+        'NumeroRevision': int NumeroRevision,
         'Color': String Color,
         'NumMotor': String NumMotor,
         'NumArmado': String NumArmado,
@@ -83,6 +86,7 @@ class JobOrderEntity {
             IdTipoVehiculo: IdTipoVehiculo,
             TipoVehiculo: TipoVehiculo,
             IdLinea: IdLinea,
+            NumeroRevision: NumeroRevision,
             Linea: Linea,
             Placa: Placa,
             Modelo: Modelo,

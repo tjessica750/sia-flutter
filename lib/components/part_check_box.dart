@@ -13,8 +13,10 @@ class DiagnosticOption {
 
 class CustomCheckboxGroup extends StatefulWidget {
   final List<DiagnosticOption> diagnosticOptions;
+  final void Function(DiagnosticOption selectedValue)? onChange;
 
-  const CustomCheckboxGroup({super.key, required this.diagnosticOptions});
+  const CustomCheckboxGroup(
+      {super.key, required this.diagnosticOptions, this.onChange});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -23,6 +25,10 @@ class CustomCheckboxGroup extends StatefulWidget {
 
 class _CustomCheckboxGroupState extends State<CustomCheckboxGroup> {
   void _updateCheckboxValues(int index) {
+    if (widget.onChange != null) {
+      widget.onChange!(widget.diagnosticOptions[index]);
+    }
+
     setState(() {
       for (int i = 0; i < widget.diagnosticOptions.length; i++) {
         if (i == index) {

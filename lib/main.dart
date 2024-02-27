@@ -2,6 +2,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:test_driven_app/auth/authentication_cubit.dart';
 import 'package:test_driven_app/screens/auth/confirm_password_page.dart';
 import 'screens/login_page.dart';
@@ -20,6 +21,8 @@ Future<void> configureAmplify() async {
 }
 
 void main() async {
+  await dotenv.load(fileName: ".env");
+
   WidgetsFlutterBinding.ensureInitialized();
 
   configureAmplify();

@@ -76,9 +76,10 @@ class _AvaluoPagePageState extends State<AvaluoPage> {
                       )
                     ],
                   ),
-                  const Text(
-                    "Revision #000001",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  Text(
+                    "Revision #${widget.jobOrder.NumeroRevision.toString().padLeft(10, '0')}",
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.bold),
                   )
                 ],
               ),
