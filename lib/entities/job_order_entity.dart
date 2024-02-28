@@ -15,6 +15,9 @@ class JobOrderEntity {
   final String Linea;
   final String Placa;
   final String Modelo;
+  final String ClienteNombre;
+  final String ClienteApellido;
+  final String Marca;
   final int NumeroRevision;
   final String Color;
   final String NumMotor;
@@ -34,10 +37,13 @@ class JobOrderEntity {
       required this.Estado,
       required this.IdVehiculo,
       required this.IdTipoVehiculo,
+      required this.Marca,
       required this.TipoVehiculo,
       required this.IdLinea,
       required this.Linea,
       required this.Placa,
+      required this.ClienteNombre,
+      required this.ClienteApellido,
       required this.NumeroRevision,
       required this.Modelo,
       required this.Color,
@@ -62,11 +68,14 @@ class JobOrderEntity {
         'IdLinea': String IdLinea,
         'Linea': String Linea,
         'IdTipoVehiculo': int IdTipoVehiculo,
+        'ClienteNombre': String ClienteNombre,
+        'ClienteApellido': String ClienteApellido,
         'TipoVehiculo': String TipoVehiculo,
         'Placa': String Placa,
         'Modelo': String Modelo,
         'NumeroRevision': int NumeroRevision,
         'Color': String Color,
+        'Marca': String Marca,
         'NumMotor': String NumMotor,
         'NumArmado': String NumArmado,
         'NumSeguridad': String NumSeguridad,
@@ -96,7 +105,10 @@ class JobOrderEntity {
             NumSeguridad: NumSeguridad,
             NumChasis: NumChasis,
             NumSerie: NumSerie,
-            NumCabina: NumCabina),
+            NumCabina: NumCabina,
+            ClienteNombre: ClienteNombre,
+            ClienteApellido: ClienteApellido,
+            Marca: Marca),
       _ =>
         throw const FormatException('error al parser tipo de orden de trabajo'),
     };

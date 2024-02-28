@@ -162,9 +162,8 @@ class _OrdersPageState extends State<OrdersPage> {
                               vertical: 10.0, horizontal: 8.0),
                           decoration: const BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1.0), // Borde inferior
+                              bottom:
+                                  BorderSide(color: Colors.grey, width: 1.0),
                             ),
                           ),
                           child: Text(
@@ -181,9 +180,8 @@ class _OrdersPageState extends State<OrdersPage> {
                               vertical: 10.0, horizontal: 8.0),
                           decoration: const BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1.0), // Borde inferior
+                              bottom:
+                                  BorderSide(color: Colors.grey, width: 1.0),
                             ),
                           ),
                           child: Text(
@@ -200,13 +198,12 @@ class _OrdersPageState extends State<OrdersPage> {
                               vertical: 10.0, horizontal: 8.0),
                           decoration: const BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1.0), // Borde inferior
+                              bottom:
+                                  BorderSide(color: Colors.grey, width: 1.0),
                             ),
                           ),
                           child: Text(
-                            jobOrder.value.NumArmado,
+                            "${jobOrder.value.ClienteNombre} ${jobOrder.value.ClienteApellido}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 20.0),
                           ),
@@ -219,9 +216,8 @@ class _OrdersPageState extends State<OrdersPage> {
                               vertical: 10.0, horizontal: 8.0),
                           decoration: const BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1.0), // Borde inferior
+                              bottom:
+                                  BorderSide(color: Colors.grey, width: 1.0),
                             ),
                           ),
                           child: Text(
@@ -238,9 +234,8 @@ class _OrdersPageState extends State<OrdersPage> {
                               vertical: 10.0, horizontal: 8.0),
                           decoration: const BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1.0), // Borde inferior
+                              bottom:
+                                  BorderSide(color: Colors.grey, width: 1.0),
                             ),
                           ),
                           child: Text(
@@ -257,13 +252,12 @@ class _OrdersPageState extends State<OrdersPage> {
                               vertical: 10.0, horizontal: 8.0),
                           decoration: const BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1.0), // Borde inferior
+                              bottom:
+                                  BorderSide(color: Colors.grey, width: 1.0),
                             ),
                           ),
                           child: Text(
-                            jobOrder.value.Modelo,
+                            jobOrder.value.Marca,
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 20.0),
                           ),

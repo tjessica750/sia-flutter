@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:test_driven_app/components/main_drawer.dart';
+import 'package:test_driven_app/components/revision_layout.dart';
+import 'package:test_driven_app/screens/painting_exam_page.dart';
 import 'package:test_driven_app/screens/photo_page.dart';
 import 'package:test_driven_app/screens/photo_panel_control_page.dart';
 
@@ -33,44 +36,55 @@ class _AddCarInprintPageState extends State<AddCarInprintPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: const Text("Inprenta"),
+        ),
+        drawer: const MainDrawer(),
         body: SafeArea(
-      top: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              children: photoParts
-                  .map((photoPart) => ListTile(
-                        title: Text(
-                          photoPart.name,
-                        ),
-                        trailing: Icon(
-                          photoPart.photo != null
-                              ? Icons.check_box
-                              : Icons.check_box_outline_blank_rounded,
-                        ),
-                        onTap: () async {
-                          var partUpdated = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PhotoPanelControlPage(
-                                      photoPart: photoPart)));
+          top: true,
+          child: RevisionLayout(
+              onNext: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PaintingExamPage()));
+              },
+              onPrevious: () {
+                Navigator.pop(context);
+              },
+              title: 'Fotografias Inprenta',
+              revisionNumber: 123,
+              child: Column(
+                  children: photoParts
+                      .map((photoPart) => ListTile(
+                            title: Text(
+                              photoPart.name,
+                            ),
+                            trailing: Icon(
+                              photoPart.photo != null
+                                  ? Icons.check_box
+                                  : Icons.check_box_outline_blank_rounded,
+                            ),
+                            onTap: () async {
+                              var partUpdated = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          PhotoPanelControlPage(
+                                              photoPart: photoPart)));
 
-                          if (partUpdated == null) {
-                            return;
-                          }
+                              if (partUpdated == null) {
+                                return;
+                              }
 
-                          setState(() {
-                            photoPart.photo = (partUpdated as PhotoPart).photo;
-                          });
-                        },
-                        dense: false,
-                      ))
-                  .toList()),
-        ],
-      ),
-    ));
+                              setState(() {
+                                photoPart.photo =
+                                    (partUpdated as PhotoPart).photo;
+                              });
+                            },
+                            dense: false,
+                          ))
+                      .toList())),
+        ));
   }
 }

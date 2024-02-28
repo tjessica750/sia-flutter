@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
+import 'package:test_driven_app/components/revision_layout.dart';
+import 'package:test_driven_app/screens/add_car_inprint_page.dart';
 import 'package:test_driven_app/screens/photo_panel_control_page.dart';
 
 class PhotoPart {
@@ -45,7 +47,18 @@ class _PhotoPageState extends State<PhotoPage> {
           title: const Text("Vehiculo"),
         ),
         drawer: const MainDrawer(),
-        body: SingleChildScrollView(
+        body: RevisionLayout(
+          onNext: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddCarInprintPage()));
+          },
+          onPrevious: () {
+            Navigator.pop(context);
+          },
+          title: 'Tomar Fotografias',
+          revisionNumber: 123,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [

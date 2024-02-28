@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:test_driven_app/components/future_layout.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
 import 'package:test_driven_app/components/part_check_box.dart';
+import 'package:test_driven_app/components/revision_layout.dart';
 import 'package:test_driven_app/entities/accessories_entity.dart';
 import 'package:test_driven_app/entities/job_order_entity.dart';
 import 'package:test_driven_app/entities/part_entity.dart';
@@ -41,6 +42,11 @@ class _PartsPageState extends State<PartsPage> {
         _getPartAccesories(currentPartIndex);
       });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void _updateCurrentPart(int index) {
@@ -85,66 +91,19 @@ class _PartsPageState extends State<PartsPage> {
       body: FutureLayout(
         future: partTypesFuture,
         initialData: const [],
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+        child: RevisionLayout(
+          onNext: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const PhotoPage()));
+          },
+          onPrevious: () {
+            Navigator.pop(context);
+          },
+          title: "Formulario de partes",
+          revisionNumber: widget.order.NumeroRevision,
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                                const EdgeInsets.all(20.0)),
-                            backgroundColor: MaterialStateProperty.all(
-                                Color(int.parse('0xFFE0E0F9'))),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0)))),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text("Atras",
-                            style: TextStyle(
-                                fontSize: 21, fontWeight: FontWeight.bold)),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                                const EdgeInsets.all(20.0)),
-                            backgroundColor: MaterialStateProperty.all(
-                                Color(int.parse('0x8D93D2'))),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0)))),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const PhotoPage()));
-                        },
-                        child: const Text("Siguiente",
-                            style: TextStyle(
-                                fontSize: 21, fontWeight: FontWeight.bold)),
-                      )
-                    ],
-                  ),
-                  Text(
-                    "Revision #${widget.order.NumeroRevision.toString().padLeft(10, '0')}",
-                    style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.all(10),
                 color: const Color(0xFFE0E0F9),
                 width: double.infinity,
                 child: Row(
