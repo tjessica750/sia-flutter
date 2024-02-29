@@ -42,6 +42,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: true,
         title: 'Sia de colombia',
         home: BlocProvider(
           create: (context) => authenticationCubit..checkAuthStatus(),

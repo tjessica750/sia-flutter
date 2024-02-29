@@ -1,4 +1,7 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/material.dart';
+import 'package:test_driven_app/components/alert_dialog.dart';
 import 'package:test_driven_app/components/future_layout.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
 import 'package:test_driven_app/entities/job_order_entity.dart';
@@ -27,6 +30,15 @@ class _OrdersPageState extends State<OrdersPage> {
 
       return value;
     });
+  }
+
+  void _startOrder(BuildContext context, JobOrderEntity jobOrder) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AvaluoPage(
+                  jobOrder: jobOrder,
+                )));
   }
 
   @override
@@ -95,213 +107,104 @@ class _OrdersPageState extends State<OrdersPage> {
                         int.parse('0xFFE0E0F9'),
                       ),
                     ),
-                    children: const [
-                      TableCell(
-                          child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text("#",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold)),
-                      )),
-                      TableCell(
-                          child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text("Placa",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold)),
-                      )),
-                      TableCell(
-                          child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text("Cliente",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold)),
-                      )),
-                      TableCell(
-                          child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text("Tipo servicio",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold)),
-                      )),
-                      TableCell(
-                          child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text("Tipo vehiculo",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold)),
-                      )),
-                      TableCell(
-                          child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text("Marca",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold)),
-                      )),
-                      TableCell(
-                          child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text("Acciones",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold)),
-                      ))
+                    children: [
+                      _buildHeaderTableCell("#"),
+                      _buildHeaderTableCell("Placa"),
+                      _buildHeaderTableCell("Cliente"),
+                      _buildHeaderTableCell("Tipo servicio"),
+                      _buildHeaderTableCell("Tipo vehiculo"),
+                      _buildHeaderTableCell("Marca"),
+                      _buildHeaderTableCell("Acciones"),
                     ]),
-                ...jobOrders.toList().asMap().entries.map((jobOrder) =>
-                    TableRow(children: [
-                      TableCell(
-                        child: Container(
-                          height: 65,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 8.0),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                          ),
-                          child: Text(
-                            (jobOrder.key + 1).toString(),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20.0),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Container(
-                          height: 65,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 8.0),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                          ),
-                          child: Text(
-                            textAlign: TextAlign.center,
+                ...jobOrders
+                    .toList()
+                    .asMap()
+                    .entries
+                    .map((jobOrder) => TableRow(children: [
+                          _buildCustomTableCell((jobOrder.key + 1).toString()),
+                          _buildCustomTableCell(
                             jobOrder.value.Placa,
-                            style: const TextStyle(fontSize: 20.0),
                           ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Container(
-                          height: 65,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 8.0),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                          ),
-                          child: Text(
-                            "${jobOrder.value.ClienteNombre} ${jobOrder.value.ClienteApellido}",
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20.0),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Container(
-                          height: 65,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 8.0),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                          ),
-                          child: Text(
+                          _buildCustomTableCell(
+                              "${jobOrder.value.ClienteNombre} ${jobOrder.value.ClienteApellido}"),
+                          _buildCustomTableCell(
                             jobOrder.value.Estado,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20.0),
                           ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Container(
-                          height: 65,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 8.0),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                          ),
-                          child: Text(
+                          _buildCustomTableCell(
                             jobOrder.value.TipoVehiculo,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20.0),
                           ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Container(
-                          height: 65,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 8.0),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                          ),
-                          child: Text(
+                          _buildCustomTableCell(
                             jobOrder.value.Marca,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20.0),
                           ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Container(
-                          height: 65,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 8.0),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton.filled(
-                                  iconSize: 30,
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => AvaluoPage(
-                                                  jobOrder: jobOrder.value,
-                                                )));
-                                  },
-                                  icon: const Icon(Icons.start_sharp,
-                                      color: Colors.green)),
-                              IconButton.filled(
-                                  iconSize: 30,
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.check_circle_outlined,
-                                      color: Colors.redAccent))
-                            ],
-                          ),
-                        ),
-                      )
-                    ]))
+                          _buildCustomActionCell(() {
+                            AlertDialogUtil.showConfirmationDialog(
+                                context,
+                                "Confirmar",
+                                "Quieres iniciar el diagnostico ?", () {
+                              _startOrder(context, jobOrder.value);
+                            });
+                          }, () {}),
+                        ]))
               ],
             ),
           ])),
     );
   }
+}
+
+Widget _buildCustomTableCell(String value) {
+  return TableCell(
+    child: Container(
+      height: 65,
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.grey, width: 1.0),
+        ),
+      ),
+      child: Text(
+        textAlign: TextAlign.center,
+        value,
+        style: const TextStyle(fontSize: 20.0),
+      ),
+    ),
+  );
+}
+
+Widget _buildCustomActionCell(void Function() start, void Function() end) {
+  return TableCell(
+    child: Container(
+      height: 65,
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.grey, width: 1.0),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton.filled(
+              iconSize: 30,
+              onPressed: start,
+              icon: const Icon(Icons.start_sharp, color: Colors.green)),
+          IconButton.filled(
+              iconSize: 30,
+              onPressed: end,
+              icon: const Icon(Icons.check_circle_outlined,
+                  color: Colors.redAccent))
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildHeaderTableCell(String value) {
+  return TableCell(
+      child: Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Text(value,
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+  ));
 }

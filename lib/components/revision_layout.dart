@@ -26,35 +26,13 @@ class RevisionLayout extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton(
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.all(20.0)),
-                        backgroundColor: MaterialStateProperty.all(
-                            Color(int.parse('0xFFE0E0F9'))),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0)))),
-                    onPressed: onPrevious,
-                    child: const Text("Atras",
-                        style: TextStyle(
-                            fontSize: 21, fontWeight: FontWeight.bold)),
-                  ),
+                  _buildActionButton(
+                      "Atras", Color(int.parse('0xFFE0E0F9')), onPrevious),
                   const SizedBox(
                     width: 20,
                   ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.all(20.0)),
-                        backgroundColor: MaterialStateProperty.all(
-                            Color(int.parse('0x8D93D2'))),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0)))),
-                    onPressed: onNext,
-                    child: const Text("Siguiente",
-                        style: TextStyle(
-                            fontSize: 21, fontWeight: FontWeight.bold)),
-                  )
+                  _buildActionButton(
+                      "Siguiente", Color(int.parse('0x8D93D2')), onNext),
                 ],
               ),
               Text(
@@ -94,4 +72,17 @@ class RevisionLayout extends StatelessWidget {
               ))
         ]));
   }
+}
+
+_buildActionButton(String title, Color color, void Function()? onPressed) {
+  return ElevatedButton(
+    style: ButtonStyle(
+        padding: MaterialStateProperty.all(const EdgeInsets.all(20.0)),
+        backgroundColor: MaterialStateProperty.all(color),
+        shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)))),
+    onPressed: onPressed,
+    child: Text(title,
+        style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
+  );
 }
