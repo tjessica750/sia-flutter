@@ -6,14 +6,22 @@ Future<Map<dynamic, dynamic>> sendHttpRequest(String url, String method,
     {Map<String, dynamic>? data}) async {
   try {
     late http.Response response;
-    if (method.toUpperCase() == 'GET') {
-      response = await http.get(Uri.parse(url));
-    } else if (method.toUpperCase() == 'POST') {
-      response = await http.post(Uri.parse(url), body: data);
-    } else if (method.toUpperCase() == 'PUT') {
-      response = await http.put(Uri.parse(url), body: data);
-    } else if (method.toUpperCase() == 'DELETE') {
-      response = await http.delete(Uri.parse(url));
+
+    switch (method.toUpperCase()) {
+      case 'GET':
+        response = await http.get(Uri.parse(url));
+        break;
+      case 'POST':
+        response = await http.post(Uri.parse(url), body: data);
+        break;
+      case 'PUT':
+        response = await http.put(Uri.parse(url), body: data);
+        break;
+      case 'DELETE':
+        response = await http.delete(Uri.parse(url));
+        break;
+      default:
+        throw Exception("HTTP method $method not suportted");
     }
 
     return {

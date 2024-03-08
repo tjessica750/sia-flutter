@@ -151,7 +151,7 @@ class _CarPhotos extends State<CarPhotos> {
                             width: 2, color: Color(int.parse('0xFFE0E0F9'))))),
                 child: SizedBox(
                   height: 220.0,
-                  width: 220.0, // Altura de la imagen
+                  width: 220.0,
                   child: Image.asset("assets/images/car.jpg"),
                 ))
           ],
@@ -172,7 +172,7 @@ class _CarPhotos extends State<CarPhotos> {
                             width: 2, color: Color(int.parse('0xFFE0E0F9'))))),
                 child: SizedBox(
                   height: 220.0,
-                  width: 220.0, // Altura de la imagen
+                  width: 220.0,
                   child: Image.asset("assets/images/car.jpg"),
                 )),
             Container(

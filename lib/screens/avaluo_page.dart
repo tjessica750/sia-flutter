@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
 import 'package:test_driven_app/components/revision_layout.dart';
 import 'package:test_driven_app/entities/job_order_entity.dart';
-import 'package:test_driven_app/screens/parts_page.dart';
+import 'package:test_driven_app/screens/photo_page.dart';
 
 class AvaluoPage extends StatefulWidget {
   final JobOrderEntity jobOrder;
@@ -31,7 +31,7 @@ class _AvaluoPagePageState extends State<AvaluoPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => PartsPage(
+                      builder: (context) => PhotoPage(
                             order: widget.jobOrder,
                           )));
             },
@@ -58,7 +58,7 @@ class _AvaluoPagePageState extends State<AvaluoPage> {
                     ),
                     Expanded(
                       child: TextFormField(
-                        initialValue: widget.jobOrder.Modelo,
+                        initialValue: widget.jobOrder.Marca,
                         readOnly: true,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -104,6 +104,7 @@ class _AvaluoPagePageState extends State<AvaluoPage> {
                     Expanded(
                       child: TextFormField(
                         readOnly: true,
+                        initialValue: widget.jobOrder.Clase,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: "Clase",
@@ -144,6 +145,7 @@ class _AvaluoPagePageState extends State<AvaluoPage> {
                     Expanded(
                         child: TextFormField(
                       readOnly: true,
+                      initialValue: widget.jobOrder.TipoCombustible,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Combustible",
@@ -187,6 +189,7 @@ class _AvaluoPagePageState extends State<AvaluoPage> {
                     Expanded(
                         child: TextFormField(
                       readOnly: true,
+                      initialValue: widget.jobOrder.Kilometraje.toString(),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Kilometraje",
@@ -198,6 +201,7 @@ class _AvaluoPagePageState extends State<AvaluoPage> {
                     Expanded(
                         child: TextFormField(
                       readOnly: true,
+                      initialValue: widget.jobOrder.CODFASECOLDA,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "COD.FASECOLDA",

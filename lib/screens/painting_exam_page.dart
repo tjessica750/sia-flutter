@@ -3,9 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
 import 'package:test_driven_app/components/revision_layout.dart';
+import 'package:test_driven_app/entities/job_order_entity.dart';
 
 class PaintingExamPage extends StatefulWidget {
-  const PaintingExamPage({super.key});
+  final JobOrderEntity order;
+
+  const PaintingExamPage({super.key, required this.order});
 
   @override
   _PaintingExamPageState createState() => _PaintingExamPageState();
@@ -13,12 +16,17 @@ class PaintingExamPage extends StatefulWidget {
 
 class _PaintingExamPageState extends State<PaintingExamPage> {
   late int currentFormPartIndex = 0;
+  late String title = "Examen de pintura";
+
   final List<Widget> formParts = [
     _buildPaintExamForm(),
-    _buildTextArea("Diagnostico pintura"),
+    _buildTextArea(
+      "Diagnostico pintura",
+    ),
     _buildTextArea("Diagnostico AA"),
     _buildTextArea("Diagnostico Scanner"),
     _buildTextArea("Diagnostico Bateria"),
+    _buildGeneralExam()
   ];
 
   _setCurrentFormPart(int index) {
@@ -47,8 +55,8 @@ class _PaintingExamPageState extends State<PaintingExamPage> {
 
               _setCurrentFormPart(currentFormPartIndex - 1);
             },
-            title: "Examen de pintura",
-            revisionNumber: 123,
+            title: title,
+            revisionNumber: widget.order.NumeroRevision,
             child: formParts[currentFormPartIndex]));
   }
 }
@@ -162,6 +170,57 @@ Widget _buildPaintExamForm() {
           _buildCustomInput(
             "CAPÓ",
           ),
+        ],
+      )
+    ],
+  );
+}
+
+Widget _buildGeneralExam() {
+  return Column(
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            children: [
+              const Text(
+                "Bateria",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              _buildCustomInput("Vida util (%)")
+            ],
+          ),
+          Column(children: [
+            const Text(
+              "Valor Sugerido",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                _buildCustomInput("Valor sugerido"),
+                _buildCustomInput("Valor asegurado")
+              ],
+            )
+          ]),
+        ],
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      const Text(
+        "Observaciones generales",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      Row(
+        children: [
+          Expanded(child: _buildTextArea("Observaciones generales")),
         ],
       )
     ],

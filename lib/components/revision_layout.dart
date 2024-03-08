@@ -50,10 +50,8 @@ class RevisionLayout extends StatelessWidget {
             color: Color(int.parse('0xFFE0E0F9')),
             width: double.infinity,
             child: Text(title,
-                style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold)),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
           Container(
               decoration: BoxDecoration(

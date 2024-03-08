@@ -18,7 +18,7 @@ class MainDrawer extends StatelessWidget {
             DrawerHeader(
               child: SizedBox(
                 height: 150.0,
-                width: 150.0, // Altura de la imagen
+                width: 150.0,
                 child: Image.asset("assets/images/logo-sia.png"),
               ),
             ),

@@ -1,5 +1,4 @@
 // ignore_for_file: library_private_types_in_public_api
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:test_driven_app/components/future_layout.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
@@ -8,7 +7,7 @@ import 'package:test_driven_app/components/revision_layout.dart';
 import 'package:test_driven_app/entities/accessories_entity.dart';
 import 'package:test_driven_app/entities/job_order_entity.dart';
 import 'package:test_driven_app/entities/part_entity.dart';
-import 'package:test_driven_app/screens/photo_page.dart';
+import 'package:test_driven_app/screens/painting_exam_page.dart';
 import 'package:test_driven_app/services/accesorie_part.dart';
 import 'package:test_driven_app/services/part_type_service.dart';
 
@@ -34,8 +33,8 @@ class _PartsPageState extends State<PartsPage> {
 
   @override
   void initState() {
-    safePrint(widget.order);
     super.initState();
+
     partTypesFuture.then((value) {
       setState(() {
         partTypes = value;
@@ -55,7 +54,6 @@ class _PartsPageState extends State<PartsPage> {
       if (accesories[index] == null || accesories[index]!.isEmpty) {
         _getPartAccesories(index);
       }
-      safePrint(accesoriesFormData);
     });
   }
 
@@ -74,13 +72,26 @@ class _PartsPageState extends State<PartsPage> {
       accesories[index] = accesoriesFetched;
 
       for (var accessory in accesoriesFetched) {
-        accesoriesFormData[accessory] = {'quantity': 0, 'state': null};
+        accesoriesFormData[accessory] = {'quantity': null, 'state': null};
       }
     });
   }
 
   bool _validateCurrentState(AccessoriePartEntity accesorie, String state) {
     return accesoriesFormData[accesorie]!["state"] == state;
+  }
+
+  bool _validateCompletedPartDiagnostic() {
+    bool isCompleted = true;
+    for (var accessory in accesories[currentPartIndex]!) {
+      if (accesoriesFormData[accessory]?["quantity"] == null ||
+          accesoriesFormData[accessory]?["state"] == null) {
+        isCompleted = false;
+        break;
+      }
+    }
+
+    return isCompleted;
   }
 
   @override
@@ -93,8 +104,12 @@ class _PartsPageState extends State<PartsPage> {
         initialData: const [],
         child: RevisionLayout(
           onNext: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const PhotoPage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PaintingExamPage(
+                          order: widget.order,
+                        )));
           },
           onPrevious: () {
             Navigator.pop(context);
@@ -128,6 +143,8 @@ class _PartsPageState extends State<PartsPage> {
                         visible: currentPartIndex < partTypes.length - 1,
                         child: IconButton.filled(
                           onPressed: () {
+                            _validateCompletedPartDiagnostic();
+
                             _updateCurrentPart(currentPartIndex + 1);
                           },
                           icon: const Icon(Icons.navigate_next_rounded),
@@ -171,7 +188,7 @@ class _PartsPageState extends State<PartsPage> {
                                       },
                                       initialValue: accesoriesFormData[
                                               accessorie]!["quantity"]
-                                          .toString(),
+                                          ?.toString(),
                                       keyboardType:
                                           const TextInputType.numberWithOptions(
                                               decimal: false, signed: false),

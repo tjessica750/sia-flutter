@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
 import 'package:test_driven_app/components/revision_layout.dart';
-import 'package:test_driven_app/screens/painting_exam_page.dart';
+import 'package:test_driven_app/entities/job_order_entity.dart';
+import 'package:test_driven_app/screens/parts_page.dart';
 import 'package:test_driven_app/screens/photo_page.dart';
 import 'package:test_driven_app/screens/photo_panel_control_page.dart';
 
 class AddCarInprintPage extends StatefulWidget {
-  const AddCarInprintPage({super.key});
+  final JobOrderEntity order;
+
+  const AddCarInprintPage({super.key, required this.order});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -37,7 +40,7 @@ class _AddCarInprintPageState extends State<AddCarInprintPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Inprenta"),
+          title: const Text("Impronta"),
         ),
         drawer: const MainDrawer(),
         body: SafeArea(
@@ -47,13 +50,15 @@ class _AddCarInprintPageState extends State<AddCarInprintPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const PaintingExamPage()));
+                        builder: (context) => PartsPage(
+                              order: widget.order,
+                            )));
               },
               onPrevious: () {
                 Navigator.pop(context);
               },
-              title: 'Fotografias Inprenta',
-              revisionNumber: 123,
+              title: 'Fotografias Impronta',
+              revisionNumber: widget.order.NumeroRevision,
               child: Column(
                   children: photoParts
                       .map((photoPart) => ListTile(

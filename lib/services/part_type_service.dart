@@ -4,7 +4,6 @@ import 'package:test_driven_app/entities/part_entity.dart';
 import 'package:test_driven_app/helpers/http_request.dart';
 
 Future<List<PartTypeEntity>> fetchPartTypes() async {
-  safePrint("se ejecuto fetchPartTypes");
   try {
     final response =
         await sendHttpRequest("${AppConfiguration.baseUrl}/tipoparte", "GET");
@@ -18,7 +17,6 @@ Future<List<PartTypeEntity>> fetchPartTypes() async {
         .toList();
   } catch (e) {
     safePrint(e);
-
     throw Exception('Failed to load part types');
   }
 }

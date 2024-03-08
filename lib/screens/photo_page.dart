@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test_driven_app/components/main_drawer.dart';
 import 'package:test_driven_app/components/revision_layout.dart';
+import 'package:test_driven_app/entities/job_order_entity.dart';
 import 'package:test_driven_app/screens/add_car_inprint_page.dart';
 import 'package:test_driven_app/screens/photo_panel_control_page.dart';
 
@@ -13,7 +14,9 @@ class PhotoPart {
 }
 
 class PhotoPage extends StatefulWidget {
-  const PhotoPage({super.key});
+  final JobOrderEntity order;
+
+  const PhotoPage({super.key, required this.order});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -40,6 +43,10 @@ class _PhotoPageState extends State<PhotoPage> {
     super.dispose();
   }
 
+  bool validateCompletedPhotos() {
+    return !photoParts.any((photoPart) => photoPart.photo == null);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,16 +56,20 @@ class _PhotoPageState extends State<PhotoPage> {
         drawer: const MainDrawer(),
         body: RevisionLayout(
           onNext: () {
+            if (!validateCompletedPhotos()) {}
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const AddCarInprintPage()));
+                    builder: (context) => AddCarInprintPage(
+                          order: widget.order,
+                        )));
           },
           onPrevious: () {
             Navigator.pop(context);
           },
           title: 'Tomar Fotografias',
-          revisionNumber: 123,
+          revisionNumber: widget.order.NumeroRevision,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [

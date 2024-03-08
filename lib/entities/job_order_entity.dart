@@ -18,7 +18,11 @@ class JobOrderEntity {
   final String ClienteNombre;
   final String ClienteApellido;
   final String Marca;
+  final String Clase;
+  final String CODFASECOLDA;
   final int NumeroRevision;
+  final String TipoCombustible;
+  final double Kilometraje;
   final String Color;
   final String NumMotor;
   final String NumArmado;
@@ -36,15 +40,19 @@ class JobOrderEntity {
       required this.IdEstado,
       required this.Estado,
       required this.IdVehiculo,
+      required this.Clase,
       required this.IdTipoVehiculo,
       required this.Marca,
       required this.TipoVehiculo,
+      required this.TipoCombustible,
+      required this.CODFASECOLDA,
       required this.IdLinea,
       required this.Linea,
       required this.Placa,
       required this.ClienteNombre,
       required this.ClienteApellido,
       required this.NumeroRevision,
+      required this.Kilometraje,
       required this.Modelo,
       required this.Color,
       required this.NumMotor,
@@ -76,10 +84,14 @@ class JobOrderEntity {
         'NumeroRevision': int NumeroRevision,
         'Color': String Color,
         'Marca': String Marca,
+        'CODFASECOLDA': String CODFASECOLDA,
         'NumMotor': String NumMotor,
+        'Kilometraje': double Kilometraje,
+        'TipoCombustible': String TipoCombustible,
         'NumArmado': String NumArmado,
         'NumSeguridad': String NumSeguridad,
         'NumChasis': String NumChasis,
+        'Clase': String Clase,
         'NumSerie': String NumSerie,
         'NumCabina': String NumCabina,
       } =>
@@ -101,8 +113,12 @@ class JobOrderEntity {
             Modelo: Modelo,
             Color: Color,
             NumMotor: NumMotor,
+            TipoCombustible: TipoCombustible,
+            Clase: Clase,
+            CODFASECOLDA: CODFASECOLDA,
             NumArmado: NumArmado,
             NumSeguridad: NumSeguridad,
+            Kilometraje: Kilometraje,
             NumChasis: NumChasis,
             NumSerie: NumSerie,
             NumCabina: NumCabina,
