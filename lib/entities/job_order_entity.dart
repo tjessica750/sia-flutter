@@ -22,7 +22,7 @@ class JobOrderEntity {
   final String CODFASECOLDA;
   final int NumeroRevision;
   final String TipoCombustible;
-  final double Kilometraje;
+  final double? Kilometraje;
   final String Color;
   final String NumMotor;
   final String NumArmado;
@@ -86,7 +86,7 @@ class JobOrderEntity {
         'Marca': String Marca,
         'CODFASECOLDA': String CODFASECOLDA,
         'NumMotor': String NumMotor,
-        'Kilometraje': double Kilometraje,
+        'Kilometraje': double? Kilometraje,
         'TipoCombustible': String TipoCombustible,
         'NumArmado': String NumArmado,
         'NumSeguridad': String NumSeguridad,

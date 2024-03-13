@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 class FutureLayout<T> extends StatelessWidget {
@@ -20,7 +19,6 @@ class FutureLayout<T> extends StatelessWidget {
         future: future,
         initialData: initialData,
         builder: (context, snapshot) {
-          safePrint('builder ejecutado');
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
